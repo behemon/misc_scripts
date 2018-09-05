@@ -62,6 +62,7 @@ def select_acc(avatar=""):
 
     pyautogui.click(2400,800,clicks=1,button="left")
     pyautogui.press('backspace',presses=30)
+    sleep(0.2)
     pyautogui.typewrite(account)
 
     sleep(0.3)
@@ -84,7 +85,10 @@ def run_setup(acc_list):
 
 if __name__ == "__main__":
 
-    lista = ["Fixalala","Saleotra3","Mspid"]
+    # lista = ["Fixalala","Saleotra3","Mspid"]
+    # lista = ["Engiskill","Fixalala"]
+    # lista = ["Kriatonita","Saleotra3","Stiladv","Fixalala"]
+    lista = ["Kriatonita","Saleotra3","Fixalala","Stiladv"]
     # lista = ["Fixalala","Saleotra3","Mspid"]
     run_setup(lista)
 
