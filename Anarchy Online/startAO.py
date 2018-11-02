@@ -29,7 +29,7 @@ def show_apps():
 
 def Activate_AO_Client():
     app_path =r"AnarchyOnline.exe"
-    fol_path =r"D:\Funcom\Anarchy Online"
+    fol_path =r"C:\Funcom\Anarchy Online"
 
     os.chdir(fol_path)
     os.startfile(app_path)
@@ -37,9 +37,9 @@ def Activate_AO_Client():
     handle = win32gui.FindWindow(0, "End User License Agreement:")  #//paassing 0 as I dont know classname
     win32gui.SetForegroundWindow(handle)  #//put the window in foreground
     pyautogui.press("enter")
-    sleep(2)
+    sleep(3)
     pyautogui.press("enter")
-    sleep(1)
+    sleep(2)
     handle = win32gui.FindWindow(0, "Anarchy Online")  #//paassing 0 as I dont know classname
     win32gui.SetForegroundWindow(handle)  #//put the window in foreground
     move_AO_window()
@@ -87,8 +87,42 @@ if __name__ == "__main__":
 
     # lista = ["Fixalala","Saleotra3","Mspid"]
     # lista = ["Engiskill","Fixalala"]
-    # lista = ["Kriatonita","Saleotra3","Stiladv","Fixalala"]
-    lista = ["Kriatonita","Saleotra3","Fixalala","Stiladv"]
-    # lista = ["Fixalala","Saleotra3","Mspid"]
-    run_setup(lista)
+    # lista = ["Fixalala", "Stiladv","Ontertop","Saleotra3"]
+    # lista = ["Fixalala","Stiladv","Ontertop","Saleotra3","Stilmp"]
+    # lista = ["Kriatonita","Saleotra3","Fixalala","Stiladv"]
+    # lista = ["Fixalala","Ontertop"]
 
+    # lista = ["Fixalala"] # fixer 200
+    # lista = ["Engiskill"] # engineer 200
+    # lista = ["Ontertop"] # MA 200
+    lista = ["Saleotra3"] # treader 181
+    # lista = ["Stiladv"] # adventurer 120
+    # lista = ["Elmanages"] # Soldier 60
+    # lista = ["Shivnano"] # bureaucrat 60
+    # lista = ["Stilmp"] # MP 60
+    # lista = ["Grafunia"] # clan lvl 60 MA
+    # lista = ["Moisenf"] # Enforcer 25
+    # lista = ["Stilnt"] # NT 23
+    # lista = ["Stildocs"] # Doc 34
+    # lista = ["Stilcrat"] # bureaucrat 29
+    # lista = ["Stilenf"] # Enf 15
+    # lista = ["Steamyma"]
+    # lista = ["Ramidocs"] # Doc 31
+
+    # lista = ["Mspid"] # MP 60 overtune LOCKED
+    # lista = ["Elleffe10"] # fixer 15 LOCKED
+    # lista = ["Lvlvlvl2"] # adv 2 LOCKED
+    # lista = ["Amanetfix2"] # Arete langind FIXER BUFFER LOCKED start
+    # lista = ["Banderlogit"] # Arete langind FIXER BUFFER LOCKED end
+    # lista = ["Manoob"] # Arete langind MA LOCKED
+
+    # lista = ["Fixalala","Saleotra3","Mspid"]
+    # lista = ["Fixalala","Saleotra3","Stilmp"]
+    # lista = ["Manoob","Banderlogit"]
+
+    ######################## - paid - #############
+    # lista = ["Kipi-1"]
+    # lista = ["Kipi2"]
+    # lista = ["Norenmp"]
+
+    run_setup(lista)
