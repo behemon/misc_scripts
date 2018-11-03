@@ -6,7 +6,12 @@
 #    Oct 31, 2018 09:17:42 PM +0200  platform: Windows NT
 
 import sys
-
+import os
+import AO_gui_support
+import lists
+import startAO
+import win32gui
+import win32process
 try:
     import Tkinter as tk
 except ImportError:
@@ -19,19 +24,23 @@ except ImportError:
     import tkinter.ttk as ttk
     py3 = True
 
-import AO_gui_support
-import lists
-import startAO
 
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
-    top = Toplevel1 (root)
+    top = Toplevel1(root)
     AO_gui_support.init(root, top)
     root.mainloop()
 
+
+def in_loop_task():
+    Toplevel1.check_state()
+    root.after(10000,in_loop_task)
+
 w = None
+
+
 def create_Toplevel1(root, *args, **kwargs):
     '''Starting point when module is imported by another program.'''
     global w, w_win, rt
@@ -42,10 +51,12 @@ def create_Toplevel1(root, *args, **kwargs):
     AO_gui_support.init(w, top, *args, **kwargs)
     return (w, top)
 
+
 def destroy_Toplevel1():
     global w
     w.destroy()
     w = None
+
 
 class Toplevel1:
     def __init__(self, top=None):
@@ -57,7 +68,7 @@ class Toplevel1:
         _ana1color = '#d9d9d9' # X11 color: 'gray85'
         _ana2color = '#d9d9d9' # X11 color: 'gray85'
 
-        top.geometry("512x859+1087+174")
+        top.geometry("600x900+200+1000")
         # top.geometry("654x859+1331+183")
         top.title("AO lounchers")
         top.configure(background="#d9d9d9")
@@ -75,6 +86,19 @@ class Toplevel1:
         self.Button1.configure(text='''run games''')
         self.Button1.configure(command=self.run_button)
 
+        self.Button2 = tk.Button(top)
+        self.Button2.place(relx=0.433, rely=0.02, height=42, width=108)
+        self.Button2.configure(activebackground="#d9d9d9")
+        self.Button2.configure(activeforeground="#000000")
+        self.Button2.configure(background="#d9d9d9")
+        self.Button2.configure(disabledforeground="#a3a3a3")
+        self.Button2.configure(foreground="#000000")
+        self.Button2.configure(highlightbackground="#d9d9d9")
+        self.Button2.configure(highlightcolor="black")
+        self.Button2.configure(pady="0")
+        self.Button2.configure(text='''check games''')
+        self.Button2.configure(command=self.check_button)
+
         self.chckbtn = []
         x=0
         y=0
@@ -85,6 +109,7 @@ class Toplevel1:
                 x=x+0.2
             x=0
             y=y+0.035
+        root.after(0,self.check_state) # runs after the main loop starts periodicly
 
     def chkbtn_gen(self,ava,x,y):
         var = tk.BooleanVar()
@@ -95,7 +120,7 @@ class Toplevel1:
         Checkbutton.configure(activeforeground="#000000")
         Checkbutton.configure(background="#d9d9d9")
         Checkbutton.configure(disabledforeground="#a3a3a3")
-        Checkbutton.configure(foreground="#000000")
+        Checkbutton.configure(foreground="black")
         Checkbutton.configure(highlightbackground="#d9d9d9")
         Checkbutton.configure(highlightcolor="black")
         Checkbutton.configure(justify='left', anchor='w')
@@ -118,14 +143,39 @@ class Toplevel1:
                                 x[0].configure(state=tk.NORMAL)
                 break
 
-
     def run_button(self):
         playlist = []
         for btn in self.chckbtn:
             if btn[1].get() is True:
                 playlist.append(btn[2])
-        print (playlist)
-        # startAO.run_setup(playlist)
+        exclution_list = self.check_button()
+        for x in exclution_list:
+            playlist.remove(x[2])
+        startAO.run_setup(playlist)
+
+    def check_button(self):
+        allready_running = []
+        for name in self.chckbtn:
+            handle = win32gui.FindWindow(0, "Anarchy Online - %s"%name[2])
+            TID,PID = win32process.GetWindowThreadProcessId(handle)
+            if handle>0:
+                name[0].configure(background="lightgreen")
+                allready_running.append(name)
+            else:
+                name[0].configure(background="#d9d9d9")
+        return allready_running
+
+    def check_state(self):
+        for name in self.chckbtn:
+            handle = win32gui.FindWindow(0, "Anarchy Online - %s"%name[2])
+            TID,PID = win32process.GetWindowThreadProcessId(handle)
+            if handle>0:
+                # print (name[2],handle, TID, PID)
+                name[0].configure(background="lightgreen")
+            else:
+                name[0].configure(background="#d9d9d9")
+        root.after(10000,self.check_state)
+
 
 if __name__ == '__main__':
     vp_start_gui()
