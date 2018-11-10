@@ -169,11 +169,15 @@ class Toplevel1:
         for name in self.chckbtn:
             handle = win32gui.FindWindow(0, "Anarchy Online - %s"%name[2])
             TID,PID = win32process.GetWindowThreadProcessId(handle)
+            # print (name[2],handle, TID, PID)
             if handle>0:
-                # print (name[2],handle, TID, PID)
                 name[0].configure(background="lightgreen")
+            elif name[1].get() is True:
+                name[0].configure(background="red")
             else:
                 name[0].configure(background="#d9d9d9")
+
+
         root.after(10000,self.check_state)
 
 
