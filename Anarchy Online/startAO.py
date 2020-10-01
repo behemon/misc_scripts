@@ -5,6 +5,8 @@ import win32api
 import win32process
 import win32con
 import pyautogui
+import keyboard
+import mouse
 from time import sleep
 
 
@@ -14,7 +16,7 @@ def window_enum_handler(hwnd, resultList):
 
 
 def get_app_list(handles=[]):
-    mlst=[]
+    mlst = []
     win32gui.EnumWindows(window_enum_handler, handles)
     for handle in handles:
         mlst.append(handle)
@@ -24,24 +26,29 @@ def get_app_list(handles=[]):
 def show_apps():
     appwindows = get_app_list()
     for i in appwindows:
-        print (i)
+        print(i)
 
 
 def Activate_AO_Client():
-    app_path =r"AnarchyOnline.exe"
-    fol_path =r"C:\Funcom\Anarchy Online"
+    app_path = r"AnarchyOnline.exe"
+    fol_path = r"C:\Funcom\Anarchy Online"
 
     os.chdir(fol_path)
     os.startfile(app_path)
     sleep(1)
-    handle = win32gui.FindWindow(0, "End User License Agreement:")  #//paassing 0 as I dont know classname
-    win32gui.SetForegroundWindow(handle)  #//put the window in foreground
-    pyautogui.press("enter")
+    handle = win32gui.FindWindow(0, "End User License Agreement:")  # //paassing 0 as I dont know classname
+    win32gui.SetForegroundWindow(handle)  # //put the window in foreground
+
+    # pyautogui.press("enter")
+    keyboard.press_and_release('enter')
     sleep(3)
-    pyautogui.press("enter")
+
+    # pyautogui.press("enter")
+    keyboard.press_and_release('enter')
     sleep(2)
-    handle = win32gui.FindWindow(0, "Anarchy Online")  #//paassing 0 as I dont know classname
-    win32gui.SetForegroundWindow(handle)  #//put the window in foreground
+
+    handle = win32gui.FindWindow(0, "Anarchy Online")  # //paassing 0 as I dont know classname
+    win32gui.SetForegroundWindow(handle)  # //put the window in foreground
     move_AO_window()
 
 
@@ -53,27 +60,54 @@ def move_AO_window():
 def select_acc(avatar=""):
     from lists import alist
     from lists import pas
+    account = ""
+    user = 0
+
+    # for accounts in alist:
+    #     if avatar in accounts[1]:
+    #         # print(accounts,accounts[1].index(avatar))
+    #         account = accounts[0]
+    #         user = accounts[1].index(avatar)
 
     for accounts in alist:
-        if avatar in accounts[1]:
-            # print(acca,acca[1].index(ava))
-            account = accounts[0]
-            user = accounts[1].index(avatar)
+        x = 0
+        for acca in accounts[1]:
+            if avatar in acca[0]:
+                account = accounts[0]
+                user = x
+            x += 1
+        # if avatar in accounts[1]:
+        #     # print(accounts,accounts[1].index(avatar))
+        #     account = accounts[0]
+        #     user = accounts[1].index(avatar)
 
-    pyautogui.click(2400,800,clicks=1,button="left")
-    pyautogui.press('backspace',presses=30)
-    sleep(0.2)
-    pyautogui.typewrite(account)
+
+    mouse.move(2400, 800, absolute=True, duration=0)
+    mouse.click(button='left')
+    sleep(0.4)
+    for x in range(30):
+        keyboard.press_and_release('backspace')
+
+    sleep(0.4)
+    keyboard.write(account)
 
     sleep(0.3)
-    pyautogui.click(2400,840,clicks=1,button="left")
-    pyautogui.typewrite(pas)
-    pyautogui.press('enter')
+    mouse.move(2400, 840, absolute=True, duration=0)
+    mouse.click(button='left')
+
+    sleep(0.3)
+    keyboard.write(pas)
+
+    keyboard.press_and_release('enter')
 
     sleep(1)
-    pyautogui.press('up',presses=8)
-    pyautogui.press('down',presses=user)
-    pyautogui.press('enter')
+    for x in range(8):
+        keyboard.press_and_release('up')
+
+    for x in range(user):
+        keyboard.press_and_release('down')
+
+    keyboard.press_and_release('enter')
     sleep(3)
 
 
@@ -83,8 +117,8 @@ def run_setup(acc_list):
         sleep(1)
         select_acc(acc)
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     # lista = ["Fixalala","Saleotra3","Mspid"]
     # lista = ["Engiskill","Fixalala"]
     # lista = ["Fixalala", "Stiladv","Ontertop","Saleotra3"]
@@ -95,7 +129,7 @@ if __name__ == "__main__":
     # lista = ["Fixalala"] # fixer 200
     # lista = ["Engiskill"] # engineer 200
     # lista = ["Ontertop"] # MA 200
-    lista = ["Saleotra3"] # treader 181
+    lista = ["Saleotra3"]  # treader 181
     # lista = ["Stiladv"] # adventurer 120
     # lista = ["Elmanages"] # Soldier 60
     # lista = ["Shivnano"] # bureaucrat 60

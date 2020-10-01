@@ -68,7 +68,7 @@ class Toplevel1:
         _ana1color = '#d9d9d9' # X11 color: 'gray85'
         _ana2color = '#d9d9d9' # X11 color: 'gray85'
 
-        top.geometry("600x900+200+1000")
+        top.geometry("900x900+50+1000")
         # top.geometry("654x859+1331+183")
         top.title("AO lounchers")
         top.configure(background="#d9d9d9")
@@ -106,14 +106,15 @@ class Toplevel1:
 
             for ava in acc[1]:
                 self.chckbtn.append(self.chkbtn_gen(ava, x, y))
-                x=x+0.2
+                x=x+0.21 # width between the names 
             x=0
             y=y+0.035
         root.after(0,self.check_state) # runs after the main loop starts periodicly
 
     def chkbtn_gen(self,ava,x,y):
         var = tk.BooleanVar()
-        name = ava
+        name = ava[0]
+        s=" "
         Checkbutton = tk.Checkbutton(None)
         Checkbutton.place(relx=0.024+x, rely=0.112+y, relheight=0.043, relwidth=0.262)
         Checkbutton.configure(activebackground="#d9d9d9")
@@ -124,7 +125,7 @@ class Toplevel1:
         Checkbutton.configure(highlightbackground="#d9d9d9")
         Checkbutton.configure(highlightcolor="black")
         Checkbutton.configure(justify='left', anchor='w')
-        Checkbutton.configure(text=ava)
+        Checkbutton.configure(text=ava[0]+s+ava[1])
         Checkbutton.configure(variable=var)
         Checkbutton.configure(command= lambda :self.check_list(name,var))
 
