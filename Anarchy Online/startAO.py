@@ -29,7 +29,7 @@ def show_apps():
         print(i)
 
 
-def Activate_AO_Client():
+def Activate_AO_Client(x, y, cx, cy):
     app_path = r"AnarchyOnline.exe"
     fol_path = r"C:\Funcom\Anarchy Online"
 
@@ -49,15 +49,20 @@ def Activate_AO_Client():
 
     handle = win32gui.FindWindow(0, "Anarchy Online")  # //paassing 0 as I dont know classname
     win32gui.SetForegroundWindow(handle)  # //put the window in foreground
-    move_AO_window()
+    move_AO_window(x, y, cx, cy)
 
 
-def move_AO_window():
+def move_AO_window(x, y, cx, cy):
     hwnd = win32gui.GetForegroundWindow()
-    win32gui.SetWindowPos(hwnd, win32con.HWND_TOP, 960, 0, 2890, 1660, 0)
+    # full window 5120x1440
+    # 960, 0, 2890, 1660, 0
+    # 960, 0, 1280, 720, 0
+
+    # win32gui.SetWindowPos(handle , top of Z, new poz left, new poz top, width, hight, 0)
+    win32gui.SetWindowPos(hwnd, win32con.HWND_TOP, x, y, cx, cy, 0)
 
 
-def select_acc(avatar=""):
+def select_acc( x, y, cx, cy, avatar=""):
     from lists import alist
     from lists import pas
     account = ""
@@ -81,17 +86,23 @@ def select_acc(avatar=""):
         #     account = accounts[0]
         #     user = accounts[1].index(avatar)
 
-
-    mouse.move(2400, 800, absolute=True, duration=0)
+    mouse_x = cx / 2 + x
+    mouse_y = cy / 2 - cy / 100
+    # acc selector window
+    mouse.move(mouse_x, mouse_y, absolute=True, duration=0)
+    sleep(1)
     mouse.click(button='left')
-    sleep(0.4)
+
     for x in range(30):
         keyboard.press_and_release('backspace')
 
-    sleep(0.4)
+    sleep(0.2)
     keyboard.write(account)
 
     sleep(0.3)
+    mouse_x = cx / 2 + x
+    mouse_y = cy / 2 + cy / 100
+    # password selector window
     mouse.move(2400, 840, absolute=True, duration=0)
     mouse.click(button='left')
 
@@ -112,10 +123,14 @@ def select_acc(avatar=""):
 
 
 def run_setup(acc_list):
+    window_x = 3840
+    window_y = 0
+    window_cx = 1280
+    window_cy = 720
     for acc in acc_list:
-        Activate_AO_Client()
+        Activate_AO_Client(window_x, window_y, window_cx, window_cy)
         sleep(1)
-        select_acc(acc)
+        select_acc( window_x, window_y, window_cx, window_cy, acc)
 
 
 if __name__ == "__main__":

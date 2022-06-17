@@ -12,6 +12,7 @@ import lists
 import startAO
 import win32gui
 import win32process
+
 try:
     import Tkinter as tk
 except ImportError:
@@ -19,9 +20,11 @@ except ImportError:
 
 try:
     import ttk
+
     py3 = False
 except ImportError:
     import tkinter.ttk as ttk
+
     py3 = True
 
 
@@ -36,7 +39,8 @@ def vp_start_gui():
 
 def in_loop_task():
     Toplevel1.check_state()
-    root.after(10000,in_loop_task)
+    root.after(10000, in_loop_task)
+
 
 w = None
 
@@ -45,9 +49,9 @@ def create_Toplevel1(root, *args, **kwargs):
     '''Starting point when module is imported by another program.'''
     global w, w_win, rt
     rt = root
-    w = tk.Toplevel (root)
+    w = tk.Toplevel(root)
     AO_gui_support.set_Tk_var()
-    top = Toplevel1 (w)
+    top = Toplevel1(w)
     AO_gui_support.init(w, top, *args, **kwargs)
     return (w, top)
 
@@ -64,9 +68,9 @@ class Toplevel1:
            top is the toplevel containing window.'''
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
-        _compcolor = '#d9d9d9' # X11 color: 'gray85'
-        _ana1color = '#d9d9d9' # X11 color: 'gray85'
-        _ana2color = '#d9d9d9' # X11 color: 'gray85'
+        _compcolor = '#d9d9d9'  # X11 color: 'gray85'
+        _ana1color = '#d9d9d9'  # X11 color: 'gray85'
+        _ana2color = '#d9d9d9'  # X11 color: 'gray85'
 
         top.geometry("900x900+50+1000")
         # top.geometry("654x859+1331+183")
@@ -100,23 +104,23 @@ class Toplevel1:
         self.Button2.configure(command=self.check_button)
 
         self.chckbtn = []
-        x=0
-        y=0
+        x = 0
+        y = 0
         for acc in lists.alist:
 
             for ava in acc[1]:
                 self.chckbtn.append(self.chkbtn_gen(ava, x, y))
-                x=x+0.21 # width between the names 
-            x=0
-            y=y+0.035
-        root.after(0,self.check_state) # runs after the main loop starts periodicly
+                x = x + 0.21  # width between the names
+            x = 0
+            y = y + 0.035
+        root.after(0, self.check_state)  # runs after the main loop starts periodicly
 
-    def chkbtn_gen(self,ava,x,y):
+    def chkbtn_gen(self, ava, x, y):
         var = tk.BooleanVar()
         name = ava[0]
-        s=" "
+        s = " "
         Checkbutton = tk.Checkbutton(None)
-        Checkbutton.place(relx=0.024+x, rely=0.112+y, relheight=0.043, relwidth=0.262)
+        Checkbutton.place(relx=0.024 + x, rely=0.112 + y, relheight=0.043, relwidth=0.262)
         Checkbutton.configure(activebackground="#d9d9d9")
         Checkbutton.configure(activeforeground="#000000")
         Checkbutton.configure(background="#d9d9d9")
@@ -125,9 +129,9 @@ class Toplevel1:
         Checkbutton.configure(highlightbackground="#d9d9d9")
         Checkbutton.configure(highlightcolor="black")
         Checkbutton.configure(justify='left', anchor='w')
-        Checkbutton.configure(text=ava[0]+s+ava[1])
+        Checkbutton.configure(text=ava[0] + s + ava[1])
         Checkbutton.configure(variable=var)
-        Checkbutton.configure(command= lambda :self.check_list(name,var))
+        Checkbutton.configure(command=lambda: self.check_list(name, var))
 
         return [Checkbutton, var, name]
 
@@ -137,7 +141,7 @@ class Toplevel1:
 
                 for i in aca[1]:
                     for x in self.chckbtn:
-                        if (x[2] == i)and x[2] != name:
+                        if (x[2] == i) and x[2] != name:
                             if var.get() == True:
                                 x[0].configure(state=tk.DISABLED)
                             if var.get() == False:
@@ -157,9 +161,9 @@ class Toplevel1:
     def check_button(self):
         allready_running = []
         for name in self.chckbtn:
-            handle = win32gui.FindWindow(0, "Anarchy Online - %s"%name[2])
-            TID,PID = win32process.GetWindowThreadProcessId(handle)
-            if handle>0:
+            handle = win32gui.FindWindow(0, "Anarchy Online - %s" % name[2])
+            TID, PID = win32process.GetWindowThreadProcessId(handle)
+            if handle > 0:
                 name[0].configure(background="lightgreen")
                 allready_running.append(name)
             else:
@@ -168,18 +172,17 @@ class Toplevel1:
 
     def check_state(self):
         for name in self.chckbtn:
-            handle = win32gui.FindWindow(0, "Anarchy Online - %s"%name[2])
-            TID,PID = win32process.GetWindowThreadProcessId(handle)
+            handle = win32gui.FindWindow(0, "Anarchy Online - %s" % name[2])
+            TID, PID = win32process.GetWindowThreadProcessId(handle)
             # print (name[2],handle, TID, PID)
-            if handle>0:
+            if handle > 0:
                 name[0].configure(background="lightgreen")
             elif name[1].get() is True:
                 name[0].configure(background="red")
             else:
                 name[0].configure(background="#d9d9d9")
 
-
-        root.after(10000,self.check_state)
+        root.after(10000, self.check_state)
 
 
 if __name__ == '__main__':
