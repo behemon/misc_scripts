@@ -5,13 +5,12 @@
 #  in conjunction with Tcl version 8.6
 #    Oct 31, 2018 09:17:42 PM +0200  platform: Windows NT
 
-import sys
-import os
+import win32gui
+import win32process
+
 import AO_gui_support
 import lists
 import startAO
-import win32gui
-import win32process
 
 try:
     import Tkinter as tk
@@ -72,7 +71,7 @@ class Toplevel1:
         _ana1color = '#d9d9d9'  # X11 color: 'gray85'
         _ana2color = '#d9d9d9'  # X11 color: 'gray85'
 
-        top.geometry("900x900+50+1000")
+        top.geometry("600x600+50+700")
         # top.geometry("654x859+1331+183")
         top.title("AO lounchers")
         top.configure(background="#d9d9d9")

@@ -1,13 +1,10 @@
 import os
-import pywinauto
-import win32gui
-import win32api
-import win32process
-import win32con
-import pyautogui
+from time import sleep
+
 import keyboard
 import mouse
-from time import sleep
+import win32con
+import win32gui
 
 
 def window_enum_handler(hwnd, resultList):
@@ -62,7 +59,7 @@ def move_AO_window(x, y, cx, cy):
     win32gui.SetWindowPos(hwnd, win32con.HWND_TOP, x, y, cx, cy, 0)
 
 
-def select_acc( x, y, cx, cy, avatar=""):
+def select_acc(x, y, cx, cy, avatar=""):
     from lists import alist
     from lists import pas
     account = ""
@@ -75,25 +72,25 @@ def select_acc( x, y, cx, cy, avatar=""):
     #         user = accounts[1].index(avatar)
 
     for accounts in alist:
-        x = 0
+        s = 0
         for acca in accounts[1]:
             if avatar in acca[0]:
                 account = accounts[0]
-                user = x
-            x += 1
+                user = s
+            s += 1
         # if avatar in accounts[1]:
         #     # print(accounts,accounts[1].index(avatar))
         #     account = accounts[0]
         #     user = accounts[1].index(avatar)
 
     mouse_x = cx / 2 + x
-    mouse_y = cy / 2 - cy / 100
+    mouse_y = cy * 0.48
     # acc selector window
     mouse.move(mouse_x, mouse_y, absolute=True, duration=0)
     sleep(1)
     mouse.click(button='left')
 
-    for x in range(30):
+    for i in range(30):
         keyboard.press_and_release('backspace')
 
     sleep(0.2)
@@ -101,9 +98,9 @@ def select_acc( x, y, cx, cy, avatar=""):
 
     sleep(0.3)
     mouse_x = cx / 2 + x
-    mouse_y = cy / 2 + cy / 100
+    mouse_y = cy * 0.506
     # password selector window
-    mouse.move(2400, 840, absolute=True, duration=0)
+    mouse.move(mouse_x, mouse_y, absolute=True, duration=0)
     mouse.click(button='left')
 
     sleep(0.3)
@@ -123,14 +120,14 @@ def select_acc( x, y, cx, cy, avatar=""):
 
 
 def run_setup(acc_list):
-    window_x = 3840
+    window_x = 3194
     window_y = 0
-    window_cx = 1280
-    window_cy = 720
+    window_cx = 1920
+    window_cy = 1120
     for acc in acc_list:
         Activate_AO_Client(window_x, window_y, window_cx, window_cy)
         sleep(1)
-        select_acc( window_x, window_y, window_cx, window_cy, acc)
+        select_acc(window_x, window_y, window_cx, window_cy, acc)
 
 
 if __name__ == "__main__":
